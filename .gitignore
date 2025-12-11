@@ -99,4 +99,5 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 
+# Archivos que no se deben compartir
 Assets/Art/
