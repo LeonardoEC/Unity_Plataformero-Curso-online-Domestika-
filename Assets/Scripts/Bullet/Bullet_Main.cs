@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullet_Main : MonoBehaviour
 {
+    public float bulletSpeed;
+
     Bullet_Controller _bulletController;
     SpriteRenderer _bulletSpriteRenderer;
     Bullet_Render _bulletRender;
@@ -53,7 +55,7 @@ public class Bullet_Main : MonoBehaviour
 
     void Update()
     {
-        _bulletController.BulletMovmenet(1f, bulletDirection);
+        _bulletController.BulletMovmenet(bulletSpeed, bulletDirection);
     }
 
     private void FixedUpdate()

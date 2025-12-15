@@ -5,10 +5,12 @@ using UnityEngine;
 public class Weapon_Main : MonoBehaviour
 {
     Weapon_Controller _wepaonController;
+    Weapon_Render _weaponRender;
+    [SerializeField]Weapon_Scheme _weaponScheme;
 
     [SerializeField]GameObject _weaponShooter;
-    [SerializeField]GameObject _bulletPrefab;
     [SerializeField]Transform _weaponFirePoint;
+
 
     void WeaponComponents()
     {
@@ -20,6 +22,18 @@ public class Weapon_Main : MonoBehaviour
         if(_weaponShooter == null)
         {
             _weaponShooter = GetComponentInParent<GameObject>();
+        }
+        if(_weaponScheme == null)
+        {
+            Debug.Log("No se encontro datos sobre el arma, revisar el inspcetor");
+        }
+        if(_weaponRender == null)
+        {
+            _weaponRender = GetComponentInChildren<Weapon_Render>();
+            if(_weaponRender._weaponRenderSprite.sprite == null)
+            {
+                _weaponRender.SetSpriteWeapon(_weaponScheme.weaponSkin);
+            }
         }
     }
 
@@ -36,11 +50,13 @@ public class Weapon_Main : MonoBehaviour
     private void Awake()
     {
         WeaponComponents();
+        _wepaonController.Initialize(_weaponScheme.weaponMunition, _weaponFirePoint, _weaponShooter);
     }
 
     void Start()
     {
-        _wepaonController.WeaponShoot(_bulletPrefab, _weaponFirePoint, _weaponShooter);
+
+        StartCoroutine(_wepaonController.WeaponMultipleShoot(1, 0.1f));
     }
 
     void Update()

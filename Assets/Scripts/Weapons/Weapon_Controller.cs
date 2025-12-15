@@ -4,22 +4,46 @@ using UnityEngine;
 
 public class Weapon_Controller : MonoBehaviour
 {
+    GameObject _munition;
+    Transform _firePoint;
+    GameObject _shooter;
 
-    public void WeaponShoot(GameObject munition, Transform firePoint, GameObject shooter)
+
+    public void Initialize(GameObject munition, Transform firePoint, GameObject shooter)
     {
-        if(munition != null && firePoint != null && shooter != null )
-        {
-            GameObject bullet = (Instantiate(munition, firePoint.position, Quaternion.identity)) as GameObject;
-            Bullet_Main bulletMain = bullet.GetComponent<Bullet_Main>();
+        _munition = munition;
+        _firePoint = firePoint;
+        _shooter = shooter;
+    }
 
-            if(shooter.transform.localScale.x < 0f)
-            {
-                bulletMain.bulletDirection = Vector2.left;
-            }
-            else
-            {
-                bulletMain.bulletDirection = Vector2.right;
-            }
+    Bullet_Main CreateMunition()
+    {
+        GameObject instance = Instantiate(_munition, _firePoint.position, Quaternion.identity);
+        return instance.GetComponent<Bullet_Main>();
+    }
+
+
+    void ApplyDirection(Bullet_Main bullet)
+    {
+        if (_shooter.transform.localScale.x < 0f)
+            bullet.bulletDirection = Vector2.left;
+        else
+            bullet.bulletDirection = Vector2.right;
+    }
+
+    void WeaponShoot()
+    {
+        Bullet_Main bullet = CreateMunition();
+        ApplyDirection(bullet);
+    }
+
+    public IEnumerator WeaponMultipleShoot(int count, float delay)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            WeaponShoot();
+            yield return new WaitForSeconds(delay);
         }
     }
+
 }

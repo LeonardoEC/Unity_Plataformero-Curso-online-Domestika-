@@ -9,13 +9,9 @@ public class Bullet_Render : MonoBehaviour
 
     public void BulletColor(SpriteRenderer sprite, float startTime, float livinTime)
     {
-
         float diferenciaDeTiempo = Time.time - startTime;
         float porcentajeDeTiempo = diferenciaDeTiempo / livinTime;
 
         sprite.color = Color.Lerp(_inicialColor, _FinalColor, porcentajeDeTiempo);
-
-
-
     }
 }
