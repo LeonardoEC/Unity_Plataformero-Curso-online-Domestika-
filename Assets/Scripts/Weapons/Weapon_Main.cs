@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon_Main : MonoBehaviour
+public class Weapon_Main : MonoBehaviour, IEnemy_Equipment
 {
+
+    // tiene que ser publicos para gestionar
     Weapon_Controller _wepaonController;
     Weapon_Render _weaponRender;
-    [SerializeField]Weapon_Scheme _weaponScheme;
 
+    // personales del weapon
+    [SerializeField]Weapon_Scheme _weaponScheme;
     [SerializeField]GameObject _weaponShooter;
     [SerializeField]Transform _weaponFirePoint;
+
 
 
     void WeaponComponents()
@@ -36,10 +40,11 @@ public class Weapon_Main : MonoBehaviour
             }
         }
     }
-
+    // esto se debe de cargar siempre que el arma este activa y al instante que este activa
     private void OnEnable()
     {
-        
+        WeaponComponents();
+        _wepaonController.Initialize(_weaponScheme.weaponMunition, _weaponFirePoint, _weaponShooter);
     }
 
     private void OnDisable()
@@ -47,35 +52,20 @@ public class Weapon_Main : MonoBehaviour
         
     }
 
-    private void Awake()
+    // Quitar tiempos de ejecusion por que el arma ya no se auto gestiona
+    // La gestiona el portador
+
+    public void EnemyUseEquipmentPrimary(int shoots, float delay)
     {
-        WeaponComponents();
-        _wepaonController.Initialize(_weaponScheme.weaponMunition, _weaponFirePoint, _weaponShooter);
+        StartCoroutine(_wepaonController.WeaponMultipleShoot(shoots, delay));
     }
 
-    void Start()
+    public void OnFlipDirection(bool lookRight)
     {
+        Vector3 scale = transform.localScale; 
+        scale.x = lookRight ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+        transform.localScale = scale;
 
-        StartCoroutine(_wepaonController.WeaponMultipleShoot(1, 0.1f));
     }
 
-    void Update()
-    {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        
-    }
-
-    private void LateUpdate()
-    {
-        
-    }
-
-    private void OnDestroy()
-    {
-        
-    }
 }

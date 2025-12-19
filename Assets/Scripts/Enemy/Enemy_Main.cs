@@ -5,6 +5,8 @@ using UnityEngine;
 public class Enemy_Main : MonoBehaviour
 {
     Enemy_IA _enemyIAController;
+    Enemy_Equipment_Detector _enemyEquipmentDetector;
+    Enemy_View_Manager _enemyViewManager;
     Enemy_Render _enemyRender;
 
     void EnemyComponets()
@@ -13,20 +15,43 @@ public class Enemy_Main : MonoBehaviour
         {
             _enemyIAController = GetComponentInChildren<Enemy_IA>();
         }
-        if(_enemyRender == null)
+
+        if(_enemyEquipmentDetector == null)
+        {
+            _enemyEquipmentDetector = GetComponentInChildren<Enemy_Equipment_Detector>();
+        }
+        if ( _enemyViewManager == null)
+        {
+            _enemyViewManager = GetComponentInChildren<Enemy_View_Manager>();
+        }
+
+        if (_enemyRender == null)
         {
             _enemyRender = GetComponentInChildren<Enemy_Render>();
-
-            _enemyIAController.OnLookDirectionChanged = (lookRight) =>
-            {
-                _enemyRender.EnemyFlipXState(!lookRight);
-            };
         }
+    }
+
+    void EnemySuscriptionBySignals()
+    {
+        _enemyIAController.OnAnimationWalking = (walkin) =>
+        {
+            _enemyRender.EnemyWalkinState(!walkin);
+        };
+        _enemyIAController.OnAttack = () =>
+        {
+            _enemyRender.FrameShoot();
+        };
+        // Suscripcion externa
+        _enemyRender.OnShootFrame = () =>
+        {
+            _enemyEquipmentDetector.EnemyUseWeapon(1, 0.1f);
+        };
     }
 
     private void OnEnable()
     {
-        
+        EnemyComponets();
+        EnemySuscriptionBySignals();
     }
 
     private void OnDisable()
@@ -36,20 +61,13 @@ public class Enemy_Main : MonoBehaviour
 
     private void Awake()
     {
-        EnemyComponets();
+
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _enemyIAController.Initialize();
         StartCoroutine(_enemyIAController.PatrolToTarget());
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
