@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Player_Main_Detector : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Player_Grounded_Detector _playerGroundedDetector;
+    public string playerGroundedState;
+    public bool isPlayerInAir;
+
+    void PlayerMainDetectorOnline()
     {
-        
+        _playerGroundedDetector = GetComponentInChildren<Player_Grounded_Detector>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void PlayerStateSucrition()
     {
-        
+        _playerGroundedDetector._onGroundedStateChanged += (state) =>
+        {
+            playerGroundedState = state;
+        };
+        _playerGroundedDetector._onAir += (isAir) =>
+        {
+            isPlayerInAir = isAir;
+        };
+    }
+
+    private void OnEnable()
+    {
+        PlayerMainDetectorOnline();
+        PlayerStateSucrition();
     }
 }
