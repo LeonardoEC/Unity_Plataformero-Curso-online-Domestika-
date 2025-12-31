@@ -25,8 +25,6 @@ public class Player_Animator_Controller : MonoBehaviour
         {
             _onPlayerAttaking?.Invoke(false);
         }
-
-        Debug.Log(state.IsTag("Player_Attack"));
     }
 
     void PlayerViewOnline()

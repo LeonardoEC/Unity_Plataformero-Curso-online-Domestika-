@@ -10,9 +10,9 @@ public class Player_Grounded_Detector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Ground"))
+        if(collision.CompareTag(GameTags.GROUND))
         {
-            _onGroundedStateChanged?.Invoke("Grounded");
+            _onGroundedStateChanged?.Invoke(GameTags.GROUND);
             _onAir?.Invoke(false);
         }
     }
@@ -25,9 +25,9 @@ public class Player_Grounded_Detector : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ground"))
+        if (collision.CompareTag(GameTags.GROUND))
         {
-            _onGroundedStateChanged?.Invoke("Air");
+            _onGroundedStateChanged?.Invoke(NotGameTags.AIR);
             _onAir?.Invoke(true);
         }
     }

@@ -254,4 +254,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ced5f26be100644a03b6d6790a2568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponRenderSprite: {fileID: 0}
+  _weaponRenderSprite: {fileID: 2861950943735313728}

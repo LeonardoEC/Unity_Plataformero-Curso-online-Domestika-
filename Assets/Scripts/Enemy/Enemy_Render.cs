@@ -38,6 +38,11 @@ public class Enemy_Render : MonoBehaviour
         _enemyAnimator.SetTrigger("Shoot");
     }
     // Conectar por el animador
+    // Mejorar el detector de accion y colocar un nombre mas generico
+    // Implementar deteccion de elemento a usar y que aqui solo accione el usar sin importar el elemento
+    // Cambiar nomrbe a useInAnimationFrame
+    // Las animaciones son fijas por ender pueden efectuar acciones siempre y cuando tenga la animacion correspondiente con el item a usar
+    // el detector debe de indicar que item usar y este metodo solo acciona el uso en el frame correspondiente
     public void UseEquipment()
     {
         OnShootFrame?.Invoke();

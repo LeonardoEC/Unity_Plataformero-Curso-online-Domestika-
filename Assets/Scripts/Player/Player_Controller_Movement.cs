@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player_Controller_Movement : MonoBehaviour
 {
     Vector2 _playerDirectionMovement;
-    float _playerSpeed = 1f;
-    float _playerJumpForce = 5f;
+
+
 
     public System.Action<bool> onPlayerStateIdle;
     public System.Action onPlayerAttacking;
@@ -16,6 +16,13 @@ public class Player_Controller_Movement : MonoBehaviour
     bool playerJumping;
     public bool attakingInProgress;
     public bool playerAttack;
+
+    Player_Script_State state;
+
+    public void Initialice(Player_Script_State state)
+    {
+        this.state = state;
+    }
 
     // implementar un activador y desactiviador de inputs para cuando se abran menus o se pause el juego, tambien para restricciones de movimiento en ciertas areas o durante ciertas animaciones
     public void PlayerInpunt(bool onAir)
@@ -56,12 +63,12 @@ public class Player_Controller_Movement : MonoBehaviour
         }
     }
 
-    public void PlayerMovement(Rigidbody2D playerRB)
+    public void PlayerMovement()
     {
         if(attakingInProgress == false)
         {
-            _playerDirectionMovement = new Vector2(horizontalInput, 0f).normalized * _playerSpeed;
-            playerRB.velocity = new Vector2(_playerDirectionMovement.x, playerRB.velocity.y);
+            _playerDirectionMovement = new Vector2(horizontalInput, 0f).normalized * state.data.currentSpeed;
+            state.rb.velocity = new Vector2(_playerDirectionMovement.x, state.rb.velocity.y);
 
             SetIdleAnimation();
             SetPlayerFlip();
@@ -69,11 +76,11 @@ public class Player_Controller_Movement : MonoBehaviour
 
     }
 
-    public void PlayerJumping(Rigidbody2D playerRB, string grounde)
+    public void PlayerJumping(Rigidbody2D playerRB, string grounde, float jumpForece)
     {
-        if(playerJumping && grounde == "Grounded" && attakingInProgress == false)
+        if(playerJumping && grounde == GameTags.GROUND && attakingInProgress == false)
         {
-            playerRB.AddForce(Vector2.up * _playerJumpForce, ForceMode2D.Impulse);
+            playerRB.AddForce(Vector2.up * jumpForece, ForceMode2D.Impulse);
             playerJumping = false;
         }
 

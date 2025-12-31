@@ -21,7 +21,6 @@ public class Weapon_Main : MonoBehaviour, IEnemy_Equipment
         if(_wepaonController == null)
         {
             _wepaonController = GetComponentInChildren<Weapon_Controller>();
-            Debug.Log("Controladroes del arma listos");
         }
         if(_weaponShooter == null)
         {

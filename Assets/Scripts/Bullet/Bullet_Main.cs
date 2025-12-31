@@ -18,13 +18,13 @@ public class Bullet_Main : MonoBehaviour
         if(_bulletController == null)
         {
             _bulletController = GetComponentInChildren<Bullet_Controller>();
-            Debug.Log("Controllador de Bullet listo para usar");
+
         }
 
         if (_bulletSpriteRenderer == null)
         {
             _bulletSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            Debug.Log("Render del Bullet listo para usar");
+
         }
         if(_bulletRender == null)
         {
@@ -35,7 +35,7 @@ public class Bullet_Main : MonoBehaviour
 
     private void OnEnable()
     {
-        _bulletController.BuilletLivingTimeOver(Bullet_Controller._bulletState.Disable, 2f);
+        _bulletController.BuilletLivingTimeOver(Bullet_Controller._bulletState.Disable, 1f);
     }
 
     private void OnDisable()

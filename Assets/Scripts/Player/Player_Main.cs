@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Player_Main : MonoBehaviour
 {
+    public Player_Scheme _playerSchema;
+    Player_Data _playerData;
+
     Rigidbody2D _playerRigidBody;
     Collider2D _playerCollider;
 
     Player_Main_Detector _playerMainDetector;
     Player_Controller_Movement _playerControllers;
     Player_Animator_Controller _playerAnimatorController;
+
+    Player_Script_State _playerScriptState;
 
     void PlayerComponentsOnLoad()
     {
@@ -56,10 +61,29 @@ public class Player_Main : MonoBehaviour
         };
     }
 
+    void PlayerInitialice()
+    {
+        gameObject.tag = GameTags.PLAYER;
+        gameObject.layer = LayerMask.NameToLayer(GameLayers.PLAYER);
+        _playerData = new Player_Data(_playerSchema);
+        // maquina de estados de componentes
+        // controllar los componentes y las sucripciones
+        _playerScriptState = new Player_Script_State()
+        {
+            rb = _playerRigidBody,
+            detector = _playerMainDetector,
+            data = _playerData
+        };
+        _playerControllers?.Initialice(_playerScriptState);
+    }
+
+
+
     void OnEnable()
     {
         PlayerComponentsOnLoad();
         PlayerSuscription();
+        PlayerInitialice();
     }
 
     void OnDisable()
@@ -88,8 +112,8 @@ public class Player_Main : MonoBehaviour
 
     void FixedUpdate()
     {
-        _playerControllers.PlayerMovement(_playerRigidBody);
-        _playerControllers.PlayerJumping(_playerRigidBody,_playerMainDetector.playerGroundedState);
+        _playerControllers.PlayerMovement();
+        _playerControllers.PlayerJumping(_playerRigidBody, _playerMainDetector.playerGroundedState, _playerData.currentJumpForce);
 
     }
 
